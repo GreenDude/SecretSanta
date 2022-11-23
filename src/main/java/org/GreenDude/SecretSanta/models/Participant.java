@@ -1,9 +1,13 @@
 package org.GreenDude.SecretSanta.models;
 
-public class Participant {
+import org.jetbrains.annotations.Contract;
 
-    private String name;
-    private String email;
+import java.util.Comparator;
+
+public class Participant implements Comparable {
+
+    private final String name;
+    private final String email;
     private Participant secretSanta;
 
     public Participant(String name, String email) {
@@ -27,8 +31,20 @@ public class Participant {
         this.secretSanta = secretSanta;
     }
 
-    public boolean compareTo(Participant anotherParticipant) {
+    @Override
+    public int compareTo(Object comparable) throws IllegalArgumentException {
+        Participant comparableParticipant = (Participant) comparable;
+        return Comparator.comparing(Participant::getName).thenComparing(Participant::getEmail).compare(this, comparableParticipant);
+    }
 
-        return this.name.equals(anotherParticipant.getName()) && this.email.equals(anotherParticipant.getEmail());
+    @Override
+    public int hashCode() {
+        return name.hashCode() + email.hashCode();
+    }
+
+    @Contract(value = "null -> false", pure = true)
+    @Override
+    public boolean equals(Object obj) {
+        return this.name.equals(((Participant) obj).name) && this.email.equals(((Participant) obj).email);
     }
 }
