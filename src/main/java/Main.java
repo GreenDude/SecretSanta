@@ -1,30 +1,24 @@
+import org.GreenDude.SecretSanta.ImageSystem;
 import org.GreenDude.SecretSanta.SantaMatcher;
 import org.GreenDude.SecretSanta.models.Participant;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.GreenDude.SecretSanta.ImageSystem.openImage;
+
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         //Read Input Params
 
-
+        Main main = new Main();
+        main.test();
     }
 
-    public void test(){
-        //Test matcher
+    public void test() throws IOException {
 
-        List<Participant> participants = new ArrayList<>();
-
-        participants.add(new Participant("John Doe", "John.Doe@example.com"));
-        participants.add(new Participant("Jane Doe", "Jane.Doe@example.com"));
-        participants.add(new Participant("John Cena", "John.Cena@example.com"));
-        participants.add(new Participant("Jane Cena", "John.Cena@example.com"));
-        participants.add(new Participant("John Poe", "John.Poe@example.com"));
-        participants.add(new Participant("Jane Poe", "John.Poe@example.com"));
-
-        SantaMatcher santaMatcher = new SantaMatcher();
-        santaMatcher.returnSantaList(participants).forEach(x-> System.out.println(x.getName().concat(" : ").concat(x.getSecretSanta().getName())));
+        openImage("/home/george/IdeaProjects/SecretSanta/src/resources/template.jpg");
     }
 }

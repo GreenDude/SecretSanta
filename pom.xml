@@ -32,6 +32,11 @@
             <artifactId>poi-ooxml</artifactId>
             <version>${apache.poi.version}</version>
         </dependency>
+        <dependency>
+            <groupId>net.imagej</groupId>
+            <artifactId>ij</artifactId>
+            <version>1.51h</version>
+        </dependency>
     </dependencies>
 
 </project>
