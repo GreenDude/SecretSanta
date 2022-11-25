@@ -9,5 +9,8 @@
         <module name="SecretSanta" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="SecretSanta" target="18" />
+    </bytecodeTargetLevel>
   </component>
 </project>
