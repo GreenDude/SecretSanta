@@ -1,3 +1,4 @@
+import org.GreenDude.SecretSanta.ExcelReader;
 import org.GreenDude.SecretSanta.SantaMatcher;
 import org.GreenDude.SecretSanta.models.Participant;
 
@@ -9,32 +10,11 @@ public class Main {
     public static void main(String[] args) {
         //Read Input Params
 
-        Main main = new Main();
-
-        System.out.printf("Test People List Start");
-        main.testPeopleList();
-        System.out.printf("Test People List End");
-
-
-    }
-
-
-
-    public void testPeopleList(){
-        //Test matcher
-
-        List<Participant> participants = new ArrayList<>();
-
-        participants.add(new Participant("John Doe", "John.Doe@example.com"));
-        participants.add(new Participant("John Doe", "John.Doe@example.com"));
-        participants.add(new Participant("Jane Doe", "Jane.Doe@example.com"));
-        participants.add(new Participant("John Cena", "John.Cena@example.com"));
-        participants.add(new Participant("Jane Cena", "John.Cena@example.com"));
-        participants.add(new Participant("John Poe", "John.Poe@example.com"));
-        participants.add(new Participant("Jane Poe", "John.Poe@example.com"));
-
+        ExcelReader excelReader = new ExcelReader();
         SantaMatcher santaMatcher = new SantaMatcher();
+        List<Participant> participants = excelReader.getParticipantList("C:\\Users\\gmosin\\OneDrive - ENDAVA\\Desktop\\GIT\\SecretSanta\\src\\resources\\Test.xlsx");
         santaMatcher.cleanDuplicates(participants);
-        santaMatcher.returnSantaList(participants).forEach(x-> System.out.println(x.getName().concat(" : ").concat(x.getSecretSanta().getName())));
+
+        santaMatcher.returnSantaList(participants);
     }
 }
