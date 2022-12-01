@@ -1,6 +1,7 @@
 import ij.ImagePlus;
 import org.GreenDude.SecretSanta.ExcelReader;
 import org.GreenDude.SecretSanta.ImageSystem;
+import org.GreenDude.SecretSanta.PathSystem;
 import org.GreenDude.SecretSanta.SantaMatcher;
 import org.GreenDude.SecretSanta.models.Participant;
 
@@ -14,25 +15,24 @@ public class Main {
 
     public static void main(String[] args) {
         //Read Input Params
-        String path = "/home/george/IdeaProjects/SecretSanta/src/resources/template.jpg";
-//        String path = "C:\\Users\\gmosin\\OneDrive - ENDAVA\\Desktop\\GIT\\SecretSanta\\src\\resources\\template.jpg";
+
+        PathSystem pathSystem = new PathSystem();
         ExcelReader excelReader = new ExcelReader();
         SantaMatcher santaMatcher = new SantaMatcher();
-        List<Participant> participants = excelReader.getParticipantList("/home/george/IdeaProjects/SecretSanta/src/resources/Test.xlsx");
-//        List<Participant> participants = excelReader.getParticipantList("C:\\Users\\gmosin\\OneDrive - ENDAVA\\Desktop\\GIT\\SecretSanta\\src\\resources\\Test.xlsx");
+        List<Participant> participants = excelReader.getParticipantList(pathSystem.getExcelPath("Ho-ho-ho"), "Sheet1");
         santaMatcher.cleanDuplicates(participants);
 
         List<Participant> matchedParticipants = santaMatcher.returnSantaList(participants);
         for (Participant participant : matchedParticipants) {
             String text = "You are Secret santa for";
             try {
-                BufferedImage image = ImageSystem.addText(openImage(path), "Helvetica", 30, text);
-                image = ImageSystem.addText(image, "Helvetica", 50, participant.getName());
-                String favorites = "I don't want a lot for christmas, some beer and food. \n".concat(
-                        "Oh and some other stuff as well"
-                );
-                ImageSystem.saveImage(image, participant.getName());
-                new ImagePlus("", image).show();
+                BufferedImage image = ImageSystem.addText(openImage(pathSystem.getTemplatePath("template")), "Helvetica", 30, true, text);
+                image = ImageSystem.addText(image, "Helvetica", 50, true, participant.getName());
+                String favorites = participant.getFavoriteThings();
+                image = ImageSystem.addText(image, "Helvetica", 30, true, "Their favorite things are: ");
+                image = ImageSystem.addText(image, "Helvetica", 25, true, favorites);
+                ImageSystem.saveImage(image, participant.getSecretSanta().getEmail());
+//                new ImagePlus("", image).show();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

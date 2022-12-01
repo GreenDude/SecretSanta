@@ -19,6 +19,9 @@ public class ImageSystem {
     private static int currentYpos = 200;
     private static final int defaultYpos = 200;
 
+    private static final int padding = 200;
+    private static final int imageWidth = 0;
+
     public static BufferedImage openImage(String path) {
         try {
             return ImageIO.read(new File(path));
@@ -27,7 +30,7 @@ public class ImageSystem {
         }
     }
 
-    public static BufferedImage addText(BufferedImage image, String fontName, int size, String text) throws IOException {
+    public static BufferedImage addText(BufferedImage image, String fontName, int size, boolean centered, String text) throws IOException {
 
         //New Font
         Font font = new Font(fontName, Font.BOLD, size);
@@ -36,15 +39,9 @@ public class ImageSystem {
         Graphics graphics = image.getGraphics();
 
         FontMetrics fontMetrics = graphics.getFontMetrics(font);
-        int xPos = (image.getWidth() - fontMetrics.stringWidth(text)) / 2;
-        currentYpos += fontMetrics.getAscent() * 1.15;
+        int xPos = centered ? (image.getWidth() - fontMetrics.stringWidth(text)) / 2 : defaultYpos;
+        currentYpos += fontMetrics.getAscent() * 1.35;
         int yPos = currentYpos;
-
-        GlyphVector glyphVector = font.createGlyphVector(fontMetrics.getFontRenderContext(), text);
-
-        Shape outline = glyphVector.getOutline(0, 0);
-        double expectedWith = outline.getBounds().getWidth();
-        double expectedHeight = outline.getBounds().getHeight();
 
         //write string
         AttributedString attributedString = new AttributedString(text);
@@ -65,7 +62,8 @@ public class ImageSystem {
         List<String> splited = Arrays.asList(text.split("[\\s|\\n,.]"));
         String shortString = "";
         for (String s : splited) {
-            //TODO: think of how to handle this split
+
+            shortString.concat(s).concat(", ");
         }
 
 
@@ -87,6 +85,16 @@ public class ImageSystem {
         }
         resetYpos();
 
+    }
+
+    private boolean textFits(Font font, BufferedImage bufferedImage, String text){
+        GlyphVector glyphVector = font.createGlyphVector(bufferedImage.getGraphics().getFontMetrics(font).getFontRenderContext(), text);
+
+        Shape outline = glyphVector.getOutline(0, 0);
+        double expectedWith = outline.getBounds().getWidth();
+        double expectedHeight = outline.getBounds().getHeight();
+
+        return false;
     }
 
     private static void resetYpos() {

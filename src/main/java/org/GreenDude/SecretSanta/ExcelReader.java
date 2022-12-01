@@ -16,19 +16,19 @@ import java.util.List;
 
 public class ExcelReader {
 
-    public List<Participant> getParticipantList(String path) {
+    public List<Participant> getParticipantList(String path, String sheetName) {
         List<Participant> participants = new ArrayList<>();
         FileInputStream file = null;
         Workbook workbook;
         Sheet sheet;
         int nameID = -1;
         int emailID = -1;
-
+        int favoritesID = -1;
 
         try {
             file = new FileInputStream(new File(path));
             workbook = new XSSFWorkbook(file);
-            sheet = workbook.getSheet("Form1");
+            sheet = workbook.getSheet(sheetName);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -50,13 +50,19 @@ public class ExcelReader {
                     if (cell.getStringCellValue().equalsIgnoreCase("Email")) {
                         emailID = cell.getColumnIndex();
                     }
-                    if (nameID != -1 && emailID != -1) {
+                    if (cell.getStringCellValue().contains("favorite")){
+                        favoritesID = cell.getColumnIndex();
+                    }
+                    if (nameID != -1 && emailID != -1 && favoritesID != -1) {
+                        System.out.println("Name ID: ".concat(String.valueOf(nameID)));
+                        System.out.println("Email ID: ".concat(String.valueOf(emailID)));
+                        System.out.println("Favorites ID: ".concat(String.valueOf(favoritesID)));
                         break;
                     }
                 }
             } else {
                 participants.add(new Participant
-                        (row.getCell(nameID).getStringCellValue(), row.getCell(emailID).getStringCellValue()));
+                        (row.getCell(nameID).getStringCellValue(), row.getCell(emailID).getStringCellValue(), row.getCell(favoritesID).getStringCellValue()));
             }
         }
 
