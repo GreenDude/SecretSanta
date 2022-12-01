@@ -10,9 +10,12 @@ public class Participant implements Comparable {
     private final String email;
     private Participant secretSanta;
 
-    public Participant(String name, String email) {
+    private String favoriteThings;
+
+    public Participant(String name, String email, String favoriteThings) {
         this.name = name;
         this.email = email;
+        this.favoriteThings = favoriteThings;
     }
 
     public String getName() {
@@ -25,6 +28,10 @@ public class Participant implements Comparable {
 
     public Participant getSecretSanta() {
         return secretSanta;
+    }
+
+    public String getFavoriteThings() {
+        return favoriteThings;
     }
 
     public void setSecretSanta(Participant secretSanta) {

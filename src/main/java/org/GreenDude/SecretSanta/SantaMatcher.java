@@ -17,24 +17,23 @@ public class SantaMatcher {
 
     public List<Participant> returnSantaList(List<Participant> participants) {
 
-        List<Participant> santas = new ArrayList<>(participants);
+        List<Participant> santaList = new ArrayList<>(participants);
         for (Participant participant : participants) {
-            participant.setSecretSanta(getNextSantaForParticipant(participant, santas));
+            participant.setSecretSanta(getNextSantaForParticipant(participant, santaList));
         }
 
         return participants;
     }
 
-    private Participant getNextSantaForParticipant(Participant participant, List<Participant> santas) {
+    private Participant getNextSantaForParticipant(Participant participant, List<Participant> santaList) {
         Random random = new Random();
 
-        Participant santa = santas.get(random.nextInt(santas.size()));
+        Participant santa = santaList.get(random.nextInt(santaList.size()));
         if (participant.compareTo(santa) == 0) {
-            return getNextSantaForParticipant(participant, santas);
+            return getNextSantaForParticipant(participant, santaList);
         } else {
-            Participant foundSanta = santa;
-            santas.remove(santa);
-            return foundSanta;
+            santaList.remove(santa);
+            return santa;
         }
     }
 }
