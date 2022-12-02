@@ -67,7 +67,7 @@ public class ExcelReader {
                     }
                 }
             } else {
-                if (row.getCell(isWillingID).getStringCellValue().equalsIgnoreCase("yes")) {
+                if (row.getCell(isWillingID).getStringCellValue().equalsIgnoreCase("yes") && !row.getCell(emailID).getStringCellValue().equalsIgnoreCase("anonymous")) {
                     participants.add(new Participant
                             (row.getCell(nameID).getStringCellValue(), row.getCell(emailID).getStringCellValue(), row.getCell(favoritesID).getStringCellValue()));
                 }
