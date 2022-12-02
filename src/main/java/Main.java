@@ -9,8 +9,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 
-import static org.GreenDude.SecretSanta.ImageSystem.openImage;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -19,6 +17,7 @@ public class Main {
         PathSystem pathSystem = new PathSystem();
         ExcelReader excelReader = new ExcelReader();
         SantaMatcher santaMatcher = new SantaMatcher();
+        String cardTemplatePath = pathSystem.getTemplatePath("template");
         List<Participant> participants = excelReader.getParticipantList(pathSystem.getExcelPath("Ho-ho-ho"), "Sheet1");
         santaMatcher.cleanDuplicates(participants);
 
@@ -26,6 +25,15 @@ public class Main {
         for (Participant participant : matchedParticipants) {
             String text = "You are Secret santa for";
             try {
+                String favorites = participant.getFavoriteThings();
+                ImageSystem imageSystem = new ImageSystem(cardTemplatePath);
+                System.out.println("Printing for: ".concat(participant.getName()).concat(" : ").concat(participant.getSecretSanta().getEmail()));
+                imageSystem.addText("Helvetica", 30, true, text)
+                        .addText("Helvetica", 50, true, participant.getName())
+                        .addText("Helvetica", 30, true, "Their favorite things are: ")
+                        .addLongText("Helvetica", 25, favorites)
+                        .saveImage(participant.getSecretSanta().getEmail());
+                /*
                 BufferedImage image = ImageSystem.addText(openImage(pathSystem.getTemplatePath("template")), "Helvetica", 30, true, text);
                 image = ImageSystem.addText(image, "Helvetica", 50, true, participant.getName());
                 String favorites = participant.getFavoriteThings();
@@ -33,6 +41,9 @@ public class Main {
                 System.out.println("Printing for: ".concat(participant.getName()).concat(" : ").concat(participant.getSecretSanta().getEmail()));
                 image = ImageSystem.addLongText(image, "Helvetica", 25, favorites);
                 ImageSystem.saveImage(image, participant.getSecretSanta().getEmail());
+
+                */
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -8,8 +8,10 @@ import java.util.stream.Collectors;
 
 public class SantaMatcher {
 
+    private final static Random random = new Random();
+
     public void cleanDuplicates(List<Participant> participants) {
-        List <Participant> p = participants.stream().distinct().toList();
+        List<Participant> p = participants.stream().distinct().toList();
         participants.clear();
         participants.addAll(p);
 
@@ -26,8 +28,6 @@ public class SantaMatcher {
     }
 
     private Participant getNextSantaForParticipant(Participant participant, List<Participant> santaList) {
-        Random random = new Random();
-
         Participant santa = santaList.get(random.nextInt(santaList.size()));
         if (participant.compareTo(santa) == 0) {
             return getNextSantaForParticipant(participant, santaList);
