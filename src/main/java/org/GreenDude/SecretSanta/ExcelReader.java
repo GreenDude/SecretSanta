@@ -7,18 +7,15 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class ExcelReader {
 
     public List<Participant> getParticipantList(String path, String sheetName) {
         List<Participant> participants = new ArrayList<>();
-        FileInputStream file = null;
         Workbook workbook;
         Sheet sheet;
         int nameID = -1;
@@ -26,20 +23,11 @@ public class ExcelReader {
         int favoritesID = -1;
         int isWillingID = -1;
 
-        try {
-            file = new FileInputStream(new File(path));
+        try (FileInputStream file = new FileInputStream(path)){
             workbook = new XSSFWorkbook(file);
             sheet = workbook.getSheet(sheetName);
-
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                assert file != null;
-                file.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }
 
         for (Row row : sheet) {
@@ -67,7 +55,8 @@ public class ExcelReader {
                     }
                 }
             } else {
-                if (row.getCell(isWillingID).getStringCellValue().equalsIgnoreCase("yes")) {
+                if ((isWillingID == -1 || row.getCell(isWillingID).getStringCellValue().equalsIgnoreCase("yes"))
+                        && !row.getCell(emailID).getStringCellValue().equalsIgnoreCase("anonymous")) {
                     participants.add(new Participant
                             (row.getCell(nameID).getStringCellValue(), row.getCell(emailID).getStringCellValue(), row.getCell(favoritesID).getStringCellValue()));
                 }
