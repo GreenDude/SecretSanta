@@ -1,5 +1,10 @@
 package org.GreenDude.SecretSanta;
 
+import org.apache.commons.lang3.SerializationUtils;
+
+import java.io.FileWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,34 +19,45 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.AttributedString;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class ImageSystem {
+
+    private final BufferedImage template;
+    private BufferedImage draftImage;
+
     private static int currentYpos = 200;
     private static final int defaultYpos = 200;
 
     private static final int padding = 200;
     private static int imageWidth = 0;
 
-    public static BufferedImage openImage(String path) {
+    String linkList;
+
+    public ImageSystem(String path){
         try {
-            BufferedImage image = ImageIO.read(new File(path));
-            imageWidth = image.getWidth();
-            return image;
+            template = ImageIO.read(new File(path));
+            draftImage = template;
+            imageWidth = template.getWidth();
+            linkList = "";
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static BufferedImage addText(BufferedImage image, String fontName, int size, boolean centered, String text) throws IOException {
+    public ImageSystem addText(String fontName, int size, boolean centered, String text) throws IOException {
 
         //New Font
         Font font = new Font(fontName, Font.BOLD, size);
 
         //Center out text
-        Graphics graphics = image.getGraphics();
+        Graphics graphics = draftImage.getGraphics();
 
         FontMetrics fontMetrics = graphics.getFontMetrics(font);
-        int xPos = centered ? (image.getWidth() - fontMetrics.stringWidth(text)) / 2 : defaultYpos;
+        int xPos = centered ? (draftImage.getWidth() - fontMetrics.stringWidth(text)) / 2 : defaultYpos;
         currentYpos += fontMetrics.getAscent() * 1.35;
         int yPos = currentYpos;
 
@@ -52,10 +68,10 @@ public class ImageSystem {
 
         graphics.drawString(attributedString.getIterator(), xPos, yPos);
 
-        return image;
+        return this;
     }
 
-    public static BufferedImage addLongText(BufferedImage image, String fontName, int size, String text) throws IOException {
+    public ImageSystem addLongText(String fontName, int size, String text) throws IOException {
 
         //Get calculation data
         Font font = new Font(fontName, Font.BOLD, size);
@@ -65,22 +81,34 @@ public class ImageSystem {
         String tempString = "";
         String stringToAdd = "";
         for (String s : splited) {
+            if(s.toLowerCase(Locale.ROOT).contains("http")){
+                try {
+                    String uri = new URI(s).getHost();
+                    linkList = linkList.concat(uri).concat(" : ").concat(s).concat("\n");
+                    s = uri;
+                } catch (URISyntaxException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(s.length() == 0){
+                continue;
+            }
             tempString = tempString.concat(s).concat(" ");
-            if (textFits(font, image, tempString)) {
+            if (textFits(font, draftImage, tempString)) {
                 stringToAdd = stringToAdd.concat(s).concat(" ");
             } else {
-                image = addText(image, fontName, size, true, stringToAdd);
-                tempString = s;
-                stringToAdd = "";
+
+                addText(fontName, size, true, stringToAdd);
+                tempString = s.concat(" ");
+                stringToAdd = tempString;
             }
         }
-        image = addText(image, fontName, size, true, stringToAdd.length() > 0 ? stringToAdd : tempString);
+        addText(fontName, size, true, stringToAdd.length() > 0 ? stringToAdd : tempString);
 
-
-        return image;
+        return this;
     }
 
-    public static void saveImage(BufferedImage image, String fileName) {
+    public void saveImage(String fileName) {
         String dirPath = "target".concat(File.separator).concat("output").concat(File.separator);
         try {
             Files.createDirectories(Paths.get(dirPath));
@@ -89,15 +117,26 @@ public class ImageSystem {
         }
         File savedFile = new File(dirPath.concat(fileName.concat(".jpg")));
         try {
-            ImageIO.write(image, "jpg", savedFile);
+            ImageIO.write(draftImage, "jpg", savedFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        if (!linkList.isEmpty()){
+            try (FileWriter linkText = new FileWriter(dirPath.concat(fileName.concat("-link.txt")))) {
+                linkText.write(linkList);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         resetYpos();
-
+        resetImage();
     }
 
-    private static boolean textFits(Font font, BufferedImage bufferedImage, String text) {
+    private void resetImage(){
+        this.draftImage = this.template;
+    }
+
+    private boolean textFits(Font font, BufferedImage bufferedImage, String text) {
 
         GlyphVector glyphVector = font.createGlyphVector(bufferedImage.getGraphics().getFontMetrics(font).getFontRenderContext(), text);
         Shape outline = glyphVector.getOutline(0, 0);
@@ -106,7 +145,7 @@ public class ImageSystem {
         return expectedWith < (imageWidth - padding * 2);
     }
 
-    private static void resetYpos() {
+    private void resetYpos() {
         currentYpos = defaultYpos;
     }
 }
