@@ -2,6 +2,9 @@ package org.GreenDude.SecretSanta;
 
 import org.apache.commons.lang3.SerializationUtils;
 
+import java.io.FileWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +19,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.AttributedString;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class ImageSystem {
 
@@ -28,11 +35,14 @@ public class ImageSystem {
     private static final int padding = 200;
     private static int imageWidth = 0;
 
+    String linkList;
+
     public ImageSystem(String path){
         try {
             template = ImageIO.read(new File(path));
             draftImage = template;
             imageWidth = template.getWidth();
+            linkList = "";
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -71,13 +81,26 @@ public class ImageSystem {
         String tempString = "";
         String stringToAdd = "";
         for (String s : splited) {
+            if(s.toLowerCase(Locale.ROOT).contains("http")){
+                try {
+                    String uri = new URI(s).getHost();
+                    linkList = linkList.concat(uri).concat(" : ").concat(s).concat("\n");
+                    s = uri;
+                } catch (URISyntaxException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(s.length() == 0){
+                continue;
+            }
             tempString = tempString.concat(s).concat(" ");
             if (textFits(font, draftImage, tempString)) {
                 stringToAdd = stringToAdd.concat(s).concat(" ");
             } else {
+
                 addText(fontName, size, true, stringToAdd);
-                tempString = s;
-                stringToAdd = "";
+                tempString = s.concat(" ");
+                stringToAdd = tempString;
             }
         }
         addText(fontName, size, true, stringToAdd.length() > 0 ? stringToAdd : tempString);
@@ -97,6 +120,13 @@ public class ImageSystem {
             ImageIO.write(draftImage, "jpg", savedFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+        if (!linkList.isEmpty()){
+            try (FileWriter linkText = new FileWriter(dirPath.concat(fileName.concat("-link.txt")))) {
+                linkText.write(linkList);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         resetYpos();
         resetImage();

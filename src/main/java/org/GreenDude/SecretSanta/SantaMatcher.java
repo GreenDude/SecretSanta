@@ -3,6 +3,12 @@ package org.GreenDude.SecretSanta;
 import org.GreenDude.SecretSanta.models.Participant;
 import org.apache.commons.lang3.ObjectUtils;
 
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,11 +25,22 @@ public class SantaMatcher {
 
     public List<Participant> returnSantaList(List<Participant> participants) {
 
+        StringBuilder stringBuilder = new StringBuilder();
         List<Participant> santaList = new ArrayList<>(participants);
         for (Participant participant : participants) {
-            participant.setSecretSanta(getNextSantaForParticipant(participant, santaList));
+            Participant secretSanta = getNextSantaForParticipant(participant, santaList);
+            participant.setSecretSanta(secretSanta);
+            stringBuilder.append(participant.getName().concat(" : ").concat(secretSanta.getName()).concat("\n"));
         }
-
+        String dirPath = "target".concat(File.separator).concat("output").concat(File.separator);
+        try {
+            Files.createDirectories(Paths.get(dirPath));
+            try (FileWriter savedFile = new FileWriter(dirPath.concat("matches.txt"))) {
+                savedFile.write(stringBuilder.toString());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return participants;
     }
 
