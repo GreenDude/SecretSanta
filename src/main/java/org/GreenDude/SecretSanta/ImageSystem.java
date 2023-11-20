@@ -48,7 +48,15 @@ public class ImageSystem {
         }
     }
 
+    public ImageSystem addFiller(int size) throws IOException {
+        return addText("Helvetica", size, true, "FILLER", new Color(255, 253, 238));
+    }
+
     public ImageSystem addText(String fontName, int size, boolean centered, String text) throws IOException {
+        return addText(fontName, size, centered, text, new Color(255, 18, 42));
+    }
+
+    private ImageSystem addText(String fontName, int size, boolean centered, String text, Color color) throws IOException {
 
         //New Font
         Font font = new Font(fontName, Font.BOLD, size);
@@ -64,7 +72,7 @@ public class ImageSystem {
         //write string
         AttributedString attributedString = new AttributedString(text);
         attributedString.addAttribute(TextAttribute.FONT, font);
-        attributedString.addAttribute(TextAttribute.FOREGROUND, new Color(255, 18, 42));
+        attributedString.addAttribute(TextAttribute.FOREGROUND, color);
 
         graphics.drawString(attributedString.getIterator(), xPos, yPos);
 
@@ -75,9 +83,8 @@ public class ImageSystem {
 
         //Get calculation data
         Font font = new Font(fontName, Font.BOLD, size);
-        int textLength = 0;
         //Split text by regex
-        List<String> splited = Arrays.asList(text.split("[\\s|\\n]"));
+        String[] splited = text.split("[\\s|\\n]");
         String tempString = "";
         String stringToAdd = "";
         for (String s : splited) {
@@ -97,7 +104,6 @@ public class ImageSystem {
             if (textFits(font, draftImage, tempString)) {
                 stringToAdd = stringToAdd.concat(s).concat(" ");
             } else {
-
                 addText(fontName, size, true, stringToAdd);
                 tempString = s.concat(" ");
                 stringToAdd = tempString;
