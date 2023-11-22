@@ -76,7 +76,7 @@ public class ExcelReader {
                     }
                 }
             } else {
-                if ((isWillingID == -1 || row.getCell(isWillingID).getStringCellValue().equalsIgnoreCase("yes"))
+                if (Objects.nonNull(row.getCell(nameID)) && (isWillingID == -1 || row.getCell(isWillingID).getStringCellValue().equalsIgnoreCase("yes"))
                         && !row.getCell(emailID).getStringCellValue().equalsIgnoreCase("anonymous")) {
                     participants.add(new Participant
                             (row.getCell(nameID).getStringCellValue(),

@@ -17,10 +17,10 @@ public class Main {
 
         PathSystem pathSystem = new PathSystem();
         ExcelReader excelReader = new ExcelReader("Name", "Email",
-                "What did you ask Santa or Grandpa Frost for Christmas or New Year", null);
+                "favorite", null);
         SantaMatcher santaMatcher = new SantaMatcher();
         String cardTemplatePath = pathSystem.getTemplatePath("Large Template");
-        List<Participant> participants = excelReader.getParticipantList(pathSystem.getExcelPath("Secret Santa"), "Sheet1");
+        List<Participant> participants = excelReader.getParticipantList(pathSystem.getExcelPath("Ho-ho-ho"), "Sheet1");
         santaMatcher.cleanDuplicates(participants);
 
         List<Participant> matchedParticipants = santaMatcher.returnSantaList(participants);
@@ -28,11 +28,11 @@ public class Main {
         System.out.println("Generating cards");
         System.out.println("");
         for (Participant participant : matchedParticipants) {
-            String text = "You are Secret santa for";
+            String text = "You are Secret Santa for: ";
             try {
                 String favorites = participant.getFavoriteThings();
                 ImageSystem imageSystem = new ImageSystem(cardTemplatePath);
-                System.out.println("Printing for: ".concat(participant.getName()).concat(" : ").concat(participant.getSecretSanta().getEmail()));
+                System.out.println("Printing for: ".concat(participant.getSecretSanta().getName()).concat(" is secret santa for:  ").concat(participant.getName()));
                 imageSystem.addText("Helvetica", 30, true, text)
                         .addLongText("Helvetica", 50, participant.getName())
                         .addFiller(12)
