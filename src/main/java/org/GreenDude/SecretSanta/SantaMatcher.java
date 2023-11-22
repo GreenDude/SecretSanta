@@ -45,12 +45,10 @@ public class SantaMatcher {
     }
 
     private Participant getNextSantaForParticipant(Participant participant, List<Participant> santaList) {
-        Participant santa = santaList.get(random.nextInt(santaList.size()));
-        if (participant.compareTo(santa) == 0) {
-            return getNextSantaForParticipant(participant, santaList);
-        } else {
-            santaList.remove(santa);
-            return santa;
-        }
+        List<Participant> tempList = new ArrayList<>(santaList);
+        tempList.remove(participant);
+        Participant santa = tempList.get(random.nextInt(tempList.size()));
+        santaList.remove(santa);
+        return santa;
     }
 }

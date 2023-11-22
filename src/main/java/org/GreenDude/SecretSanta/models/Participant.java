@@ -4,7 +4,7 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.Comparator;
 
-public class Participant implements Comparable {
+public class Participant {
 
     private final String name;
     private final String email;
@@ -36,22 +36,5 @@ public class Participant implements Comparable {
 
     public void setSecretSanta(Participant secretSanta) {
         this.secretSanta = secretSanta;
-    }
-
-    @Override
-    public int compareTo(Object comparable) throws IllegalArgumentException {
-        Participant comparableParticipant = (Participant) comparable;
-        return Comparator.comparing(Participant::getName).thenComparing(Participant::getEmail).compare(this, comparableParticipant);
-    }
-
-    @Override
-    public int hashCode() {
-        return name.hashCode() + email.hashCode();
-    }
-
-    @Contract(value = "null -> false", pure = true)
-    @Override
-    public boolean equals(Object obj) {
-        return this.name.equals(((Participant) obj).name) && this.email.equals(((Participant) obj).email);
     }
 }
