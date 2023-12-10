@@ -15,10 +15,10 @@ import java.util.Objects;
 
 public class ExcelReader {
 
-    private String nameFieldKey;
-    private String emailFieldKey;
-    private String favoriteFieldKey;
-    private String isWillingFieldKey;
+    private final String nameFieldKey;
+    private final String emailFieldKey;
+    private final String favoriteFieldKey;
+    private final String isWillingFieldKey;
 
     public ExcelReader() {
         this.nameFieldKey = "Name";

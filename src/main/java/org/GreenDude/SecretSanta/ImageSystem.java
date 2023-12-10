@@ -1,12 +1,8 @@
 package org.GreenDude.SecretSanta;
 
-import org.apache.commons.lang3.SerializationUtils;
-
 import java.io.FileWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -18,11 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.AttributedString;
-import java.util.ArrayList;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class ImageSystem {
 

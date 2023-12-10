@@ -8,6 +8,8 @@ public class PathSystem {
     private String excelPath;
     private String outputPath;
 
+    private String fontPath;
+
     public PathSystem (){
         String projectRoot = new File("").getAbsolutePath();
 
@@ -20,6 +22,7 @@ public class PathSystem {
 
         templatePath = resourcesPath.concat("cardTemplates").concat(File.separator);
         excelPath = resourcesPath.concat("excelSource").concat(File.separator);
+        fontPath = resourcesPath.concat("fonts").concat(File.separator);
         outputPath = "target".concat(File.separator).concat("SecretSantaCards").concat(File.separator);
     }
 
@@ -33,5 +36,9 @@ public class PathSystem {
 
     public String getOutputPath() {
         return outputPath;
+    }
+
+    public String getFontPath() {
+        return fontPath;
     }
 }
