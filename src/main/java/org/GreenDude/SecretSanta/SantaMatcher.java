@@ -1,16 +1,12 @@
 package org.GreenDude.SecretSanta;
 
 import org.GreenDude.SecretSanta.models.Participant;
-import org.apache.commons.lang3.ObjectUtils;
-
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SantaMatcher {
 

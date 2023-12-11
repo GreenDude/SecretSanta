@@ -1,9 +1,5 @@
 package org.GreenDude.SecretSanta.models;
 
-import org.jetbrains.annotations.Contract;
-
-import java.util.Comparator;
-
 public class Participant {
 
     private final String name;
