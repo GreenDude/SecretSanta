@@ -1,4 +1,4 @@
-package org.GreenDude.SecretSanta;
+package org.GreenDude.SecretSanta.Impl;
 
 import java.awt.*;
 import java.io.File;
@@ -18,7 +18,7 @@ public class CustomFontManager {
     public CustomFontManager(String defaultFontPath) {
         localGraphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
             List<String> fonts = Stream.of(Objects.requireNonNull(new File(defaultFontPath).listFiles()))
-                    .filter(file -> !file.isDirectory()).map(File::getName).toList();
+                    .filter(file -> !file.isDirectory()).map(x-> defaultFontPath.concat(x.getName())).toList();
 
             fonts.forEach(this::addCustomFont);
     }

@@ -1,6 +1,6 @@
-package org.GreenDude.SecretSanta;
+package org.GreenDude.SecretSanta.Impl;
 
-import org.GreenDude.SecretSanta.models.Participant;
+import org.GreenDude.SecretSanta.Impl.models.Participant;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;

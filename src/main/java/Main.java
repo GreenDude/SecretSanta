@@ -1,5 +1,5 @@
-import org.GreenDude.SecretSanta.*;
-import org.GreenDude.SecretSanta.models.Participant;
+import org.GreenDude.SecretSanta.Impl.*;
+import org.GreenDude.SecretSanta.Impl.models.Participant;
 
 import java.io.IOException;
 import java.util.List;

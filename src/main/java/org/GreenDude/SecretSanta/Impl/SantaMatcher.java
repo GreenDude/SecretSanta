@@ -1,6 +1,6 @@
-package org.GreenDude.SecretSanta;
+package org.GreenDude.SecretSanta.Impl;
 
-import org.GreenDude.SecretSanta.models.Participant;
+import org.GreenDude.SecretSanta.Impl.models.Participant;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

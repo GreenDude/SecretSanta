@@ -1,14 +1,13 @@
-package org.GreenDude.SecretSanta;
+package org.GreenDude.SecretSanta.Impl;
 
 import java.io.File;
 
 public class PathSystem {
 
-    private String templatePath;
-    private String excelPath;
-    private String outputPath;
-
-    private String fontPath;
+    private final String templatePath;
+    private final String excelPath;
+    private final String outputPath;
+    private final String fontPath;
 
     public PathSystem (){
         String projectRoot = new File("").getAbsolutePath();

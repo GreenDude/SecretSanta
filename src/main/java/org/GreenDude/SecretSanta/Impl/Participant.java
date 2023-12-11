@@ -1,4 +1,4 @@
-package org.GreenDude.SecretSanta.models;
+package org.GreenDude.SecretSanta.Impl.models;
 
 public class Participant {
 

@@ -1,4 +1,4 @@
-package org.GreenDude.SecretSanta;
+package org.GreenDude.SecretSanta.Impl;
 
 import java.io.FileWriter;
 import java.net.URI;
