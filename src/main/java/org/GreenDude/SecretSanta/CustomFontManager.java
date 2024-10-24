@@ -18,8 +18,7 @@ public class CustomFontManager {
     public CustomFontManager(String defaultFontPath) {
         localGraphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
             List<String> fonts = Stream.of(Objects.requireNonNull(new File(defaultFontPath).listFiles()))
-                    .filter(file -> !file.isDirectory()).map(File::getName).toList();
-
+                    .filter(file -> !file.isDirectory()).map(File::getPath).toList();
             fonts.forEach(this::addCustomFont);
     }
 
