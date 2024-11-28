@@ -1,17 +1,21 @@
-package org.GreenDude.SecretSanta;
+package org.GreenDude.SecretSanta.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 
-public class PathSystem {
+@Service
+public class PathService {
 
     private String templatePath;
     private String excelPath;
     private String outputPath;
-
     private String fontPath;
 
-    public PathSystem (){
-        String projectRoot = new File("").getAbsolutePath();
+    public PathService(){
+//        String projectRoot = new File("").getAbsolutePath();
+        String projectRoot = "classpath:";
 
         String resourcesPath = projectRoot
                 .concat(File.separator)
@@ -19,6 +23,8 @@ public class PathSystem {
                 .concat(File.separator)
                 .concat("resources")
                 .concat(File.separator);
+
+//        File file = ResourceUtils.getFile("classpath:templates/index.html");
 
         templatePath = resourcesPath.concat("cardTemplates").concat(File.separator);
         excelPath = resourcesPath.concat("excelSource").concat(File.separator);

@@ -1,6 +1,7 @@
 package org.GreenDude.SecretSanta.controller;
 
 import org.GreenDude.SecretSanta.service.FileStorageService;
+import org.GreenDude.SecretSanta.service.MainProcessor;
 import org.GreenDude.SecretSanta.service.SimpleInMemoryStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,11 @@ public class Controllers {
     @Autowired
     private FileStorageService fileStorageService;
 
-    @Autowired SimpleInMemoryStorage simpleInMemoryStorage;
+    @Autowired
+    private SimpleInMemoryStorage simpleInMemoryStorage;
+
+    @Autowired
+    private MainProcessor mainProcessor;
 
     @GetMapping("/secret_santa")
     public String mainPage(@RequestParam(name = "name", required = false, defaultValue = "there") String name, Model model){
@@ -29,27 +34,14 @@ public class Controllers {
 
     @GetMapping("/")
     public String homePage(){
+//        mainProcessor.printFonts();
         return "index";
     }
 
     @PostMapping("/")
     public String uploadSurvey(Model model, @RequestParam("file") MultipartFile file){
         fileStorageService.save(file);
-
-        InputStream inputStream = (InputStream) simpleInMemoryStorage.read(SimpleInMemoryStorage.TYPE.SURVEY);
-
-        StringBuilder textBuilder = new StringBuilder();
-        try (Reader reader = new BufferedReader(new InputStreamReader
-                (inputStream, StandardCharsets.UTF_8))) {
-            int c = 0;
-            while ((c = reader.read()) != -1) {
-                textBuilder.append((char) c);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        String yeet = textBuilder.toString();
-        return null;
+        mainProcessor.processSurvey((InputStream) simpleInMemoryStorage.read(SimpleInMemoryStorage.TYPE.SURVEY), "Sheet1");
+        return "redirect:/";
     }
 }

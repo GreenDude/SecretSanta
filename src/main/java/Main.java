@@ -1,5 +1,5 @@
-import org.GreenDude.SecretSanta.*;
 import org.GreenDude.SecretSanta.models.Participant;
+import org.GreenDude.SecretSanta.service.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.List;
 public class Main {
 
     public static void NoLonger_main(String[] args) {
-        PathSystem pathSystem = new PathSystem();
+        PathService pathSystem = new PathService();
         ExcelReader excelReader = new ExcelReader("Name", "Email",
                 "favorite", null);
         SantaMatcher santaMatcher = new SantaMatcher();
