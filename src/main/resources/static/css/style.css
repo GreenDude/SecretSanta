@@ -1,0 +1,40 @@
+body {
+    margin: 0;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@font-face {
+    font-family: 'MountainsofChristmas';
+    src: url('/fonts/MountainsofChristmas-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'MountainsofChristmasBold';
+    src: url('/fonts/MountainsofChristmas-Bold.ttf') format('truetype');
+}
+
+h1 {
+    font-family: 'MountainsofChristmasBold', sans-serif;
+/*    font-size: 1.5em;*/
+    text-transform: uppercase;
+}
+
+strong {
+    font-weight: 700;
+    background-color: yellow;
+}
+
+p {
+    font-family: sans-serif;
+}
+
+
+
+/*@font-face {font-family: MountainsofChristmas-Regular; src: url(MountainsofChristmas-Regular.ttf)}*/
+/*<!--        h1 {text-align: center;}-->*/
+/*h1 {font-family: MountainsofChristmas-Regular;}*/
+/*p {text-align: center;}*/
+/*div {text-align: center;}*/
+/*body {  margin: 0; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)}*/
