@@ -6,9 +6,21 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<!--<p>Get your greeting <a href="/greeting">here</a></p>-->
-
+<div th:replace="fragments/header :: header"></div>
     <h1>HO! HO! HO!</h1>
-    <p>Please uplo</p>
+    <p>Please upload the Secret Santa survey
+
+        <form
+            id="uploadForm"
+            method="post"
+            th:action="@{/}"
+            enctype="multipart/form-data">
+
+                <input id="input-file" type="file" name="file"/>
+                <button class="btn btn-sm btn-outline-success float-right" type="submit">Upload</button>
+        </form>
+    </p>
+
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

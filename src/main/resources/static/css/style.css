@@ -14,11 +14,13 @@ body {
     font-family: 'MountainsofChristmasBold';
     src: url('/fonts/MountainsofChristmas-Bold.ttf') format('truetype');
 }
-
+/*new Color(255, 18, 42))*/
 h1 {
     font-family: 'MountainsofChristmasBold', sans-serif;
-/*    font-size: 1.5em;*/
+    text-align: center;
+    font-size: 5.5em;
     text-transform: uppercase;
+    color: #eb122b;
 }
 
 strong {
@@ -27,14 +29,6 @@ strong {
 }
 
 p {
-    font-family: sans-serif;
+    font-family: 'MountainsofChristmas', sans-serif;
+    font-size: 3.5em;
 }
-
-
-
-/*@font-face {font-family: MountainsofChristmas-Regular; src: url(MountainsofChristmas-Regular.ttf)}*/
-/*<!--        h1 {text-align: center;}-->*/
-/*h1 {font-family: MountainsofChristmas-Regular;}*/
-/*p {text-align: center;}*/
-/*div {text-align: center;}*/
-/*body {  margin: 0; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)}*/
