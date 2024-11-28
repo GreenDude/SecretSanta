@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void NoLonger_main(String[] args) {
         PathSystem pathSystem = new PathSystem();
         ExcelReader excelReader = new ExcelReader("Name", "Email",
                 "favorite", null);
