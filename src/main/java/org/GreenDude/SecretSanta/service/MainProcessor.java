@@ -1,13 +1,19 @@
 package org.GreenDude.SecretSanta.service;
 
+import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.LocalFileHeader;
+import net.lingala.zip4j.model.ZipParameters;
+import net.lingala.zip4j.model.enums.CompressionMethod;
 import org.GreenDude.SecretSanta.models.Participant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 @Service
 public class MainProcessor {
@@ -19,11 +25,27 @@ public class MainProcessor {
     @Autowired
     private CustomFontManager customFontManager;
 
+    ZipParameters zipParameters = new ZipParameters();
+
+    public MainProcessor() {
+        zipParameters.setCompressionMethod(CompressionMethod.STORE);
+    }
+
     public void printFonts(){
         customFontManager.printCustomFonts();
     }
 
-    public void processSurvey(InputStream surveyFile){
+    public List<Participant> getSecretSantaList(InputStream surveyFile){
+        List<Participant> participants = excelReader.getParticipantList(surveyFile, "Sheet1");
+        santaMatcher.cleanDuplicates(participants);
+
+        return santaMatcher.returnSantaList(participants);
+    }
+
+    public File processSurvey(InputStream surveyFile){
+        String dirPath = "target".concat(File.separator).concat("output").concat(File.separator);
+        ZipFile zippy = new ZipFile(dirPath.concat("output.zip"));
+
         List<Participant> participants = excelReader.getParticipantList(surveyFile, "Sheet1");
         santaMatcher.cleanDuplicates(participants);
 
@@ -47,6 +69,13 @@ public class MainProcessor {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        try {
+            zippy.addFolder(new File(dirPath));
+            return zippy.getFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

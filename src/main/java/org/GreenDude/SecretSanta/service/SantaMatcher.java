@@ -32,8 +32,10 @@ public class SantaMatcher {
             stringBuilder.append(participant.getName().concat(" : ").concat(secretSanta.getName()).concat("\n"));
         }
         String dirPath = "target".concat(File.separator).concat("output").concat(File.separator);
+        String extractPath = "target".concat(File.separator).concat("extract").concat(File.separator).concat("output").concat(File.separator);
         try {
             Files.createDirectories(Paths.get(dirPath));
+            Files.createDirectories(Paths.get(extractPath));
             try (FileWriter savedFile = new FileWriter(dirPath.concat("matches.txt"))) {
                 savedFile.write(stringBuilder.toString());
             }

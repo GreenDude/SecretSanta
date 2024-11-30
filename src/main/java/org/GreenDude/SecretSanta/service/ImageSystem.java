@@ -94,7 +94,7 @@ public class ImageSystem {
             if(s.toLowerCase(Locale.ROOT).contains("http")){
                 try {
                     String uri = new URI(s).getHost();
-                    linkList = linkList.concat(uri).concat(" : ").concat(s).concat("\n");
+                    linkList = "Attached link".concat(" : ").concat(s).concat("\n");
                     s = uri;
                 } catch (URISyntaxException e) {
                     throw new RuntimeException(e);
