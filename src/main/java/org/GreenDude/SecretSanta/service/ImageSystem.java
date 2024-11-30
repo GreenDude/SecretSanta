@@ -118,7 +118,7 @@ public class ImageSystem {
 
     public void saveImage(String fileName) {
         String dirPath = "target".concat(File.separator).concat("output").concat(File.separator);
-        File savedFile = new File(fileName.concat(".jpg"));
+        File savedFile = new File(dirPath.concat(fileName).concat(".jpg"));
         try {
             ImageIO.write(draftImage, "jpg", savedFile);
         } catch (IOException e) {

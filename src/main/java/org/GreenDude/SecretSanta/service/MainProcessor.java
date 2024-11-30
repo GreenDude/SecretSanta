@@ -43,6 +43,8 @@ public class MainProcessor {
             createParticipantCard(participant);
         }
 
+        santaMatcher.recordMatches();
+
         try (ZipFile zippy = new ZipFile(dirPath.concat("output.zip"))){
             zippy.addFolder(new File(dirPath));
             return zippy.getFile();

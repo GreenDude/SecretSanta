@@ -15,6 +15,8 @@ public class SantaMatcher {
 
     private final static Random random = new Random();
 
+    private StringBuilder stringBuilder = new StringBuilder();
+
     public void cleanDuplicates(List<Participant> participants) {
         List<Participant> p = participants.stream().distinct().toList();
         participants.clear();
@@ -24,7 +26,6 @@ public class SantaMatcher {
 
     public List<Participant> returnSantaList(List<Participant> participants) {
 
-        StringBuilder stringBuilder = new StringBuilder();
         List<Participant> santaList = new ArrayList<>(participants);
         for (Participant participant : participants) {
             try {
@@ -37,6 +38,10 @@ public class SantaMatcher {
                 throw new RuntimeException("Odd error");
             }
         }
+        return participants;
+    }
+
+    public void recordMatches(){
         String dirPath = "target".concat(File.separator).concat("output").concat(File.separator);
         String extractPath = "target".concat(File.separator).concat("extract").concat(File.separator).concat("output").concat(File.separator);
         try {
@@ -48,7 +53,6 @@ public class SantaMatcher {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return participants;
     }
 
     private Participant getNextSantaForParticipant(Participant participant, List<Participant> santaList) {

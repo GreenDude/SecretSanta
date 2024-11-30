@@ -33,7 +33,7 @@ public class Controllers {
         return "index";
     }
 
-    @PostMapping("/")
+    @PostMapping("/upload")
     public void uploadSurvey(Model model, @RequestParam("file") MultipartFile file, HttpServletResponse response){
         simpleInMemoryStorage.save(SimpleInMemoryStorage.TYPE.SURVEY, file);
         File zip;
