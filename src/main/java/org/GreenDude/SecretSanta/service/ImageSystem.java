@@ -40,6 +40,17 @@ public class ImageSystem {
         }
     }
 
+    public ImageSystem(File templateFile){
+        try {
+            template = ImageIO.read(templateFile);
+            draftImage = template;
+            imageWidth = template.getWidth();
+            linkList = "";
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public ImageSystem addFiller(int size) throws IOException {
         return addText("Helvetica", size, true, "FILLER", new Color(255, 253, 238));
     }
