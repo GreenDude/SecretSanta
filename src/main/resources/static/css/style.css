@@ -31,4 +31,59 @@ strong {
 p {
     font-family: 'MountainsofChristmas', sans-serif;
     font-size: 3.5em;
+    text-align: center;
+}
+
+form {
+    text-align: center;
+}
+
+input {
+    font-family: 'MountainsofChristmas', sans-serif;
+    text-align: center;
+}
+
+button {
+    font-family: 'MountainsofChristmas', sans-serif;
+    text-align: center;
+}
+
+header {
+    font-family: 'MountainsofChristmas', sans-serif;
+    text-align: center;
+    font-size: 3.5em;
+    top: 25%; left: 50%;
+}
+
+footer {
+    font-family: 'MountainsofChristmas', sans-serif;
+    text-align: center;
+    font-size: 32px;
+    top: 85%; left: 50%;
+}
+
+.custom-file-label {
+    font-family: 'MountainsofChristmas', sans-serif;
+    display: inline-block;
+    font-size: 1.5em;
+    padding: 10px 10px;
+    border: 1px solid #eb122b;
+    background-color: #eb122b;
+    color: #ffffff;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.custom-file-label:hover {
+    background-color: #8fbc8f;
+    color: #fff;
+}
+
+input[type="file"] {
+    display: none; /* Ensure the file input remains hidden */
+}
+
+#uploadForm {
+    margin-bottom: 50px; /* Adjust spacing as necessary */
 }

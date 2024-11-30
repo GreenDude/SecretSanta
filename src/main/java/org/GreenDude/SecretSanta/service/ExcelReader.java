@@ -57,11 +57,10 @@ public class ExcelReader {
                     if (cell.getStringCellValue().contains(favoriteFieldKey)) {
                         favoritesID = cell.getColumnIndex();
                     }
-                    if (Objects.nonNull(isWillingFieldKey)) {
-                        if (cell.getStringCellValue().contains(isWillingFieldKey)) {
-                            isWillingID = cell.getColumnIndex();
-                        }
+                    if (cell.getStringCellValue().contains(isWillingFieldKey)) {
+                        isWillingID = cell.getColumnIndex();
                     }
+
                     if (nameID != -1 && emailID != -1 && favoritesID != -1) {
                         System.out.println("Name ID: ".concat(String.valueOf(nameID)));
                         System.out.println("Email ID: ".concat(String.valueOf(emailID)));

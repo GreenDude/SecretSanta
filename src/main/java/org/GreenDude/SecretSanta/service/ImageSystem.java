@@ -1,5 +1,6 @@
 package org.GreenDude.SecretSanta.service;
 
+
 import java.io.FileWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -11,8 +12,6 @@ import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.AttributedString;
 import java.util.Locale;
 
@@ -69,7 +68,7 @@ public class ImageSystem {
 
         FontMetrics fontMetrics = graphics.getFontMetrics(font);
         int xPos = centered ? (draftImage.getWidth() - fontMetrics.stringWidth(text)) / 2 : defaultYpos;
-        currentYpos += fontMetrics.getAscent() * 1.35;
+        currentYpos += (int) Math.round((fontMetrics.getAscent() * 1.35));
         int yPos = currentYpos;
 
         //write string
@@ -100,7 +99,7 @@ public class ImageSystem {
                     throw new RuntimeException(e);
                 }
             }
-            if(s.length() == 0){
+            if(s.isEmpty()){
                 continue;
             }
             tempString = tempString.concat(s).concat(" ");
@@ -112,19 +111,14 @@ public class ImageSystem {
                 stringToAdd = tempString;
             }
         }
-        addText(fontName, size, true, stringToAdd.length() > 0 ? stringToAdd : tempString);
+        addText(fontName, size, true, !stringToAdd.isEmpty() ? stringToAdd : tempString);
 
         return this;
     }
 
     public void saveImage(String fileName) {
         String dirPath = "target".concat(File.separator).concat("output").concat(File.separator);
-        try {
-            Files.createDirectories(Paths.get(dirPath));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        File savedFile = new File(dirPath.concat(fileName.concat(".jpg")));
+        File savedFile = new File(fileName.concat(".jpg"));
         try {
             ImageIO.write(draftImage, "jpg", savedFile);
         } catch (IOException e) {

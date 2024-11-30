@@ -1,5 +1,6 @@
 package org.GreenDude.SecretSanta.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.GreenDude.SecretSanta.service.MainProcessor;
 import org.GreenDude.SecretSanta.service.SimpleInMemoryStorage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,18 +30,42 @@ public class Controllers {
 
     @GetMapping("/")
     public String homePage(){
-//        mainProcessor.printFonts();
         return "index";
     }
 
     @PostMapping("/")
-    public String uploadSurvey(Model model, @RequestParam("file") MultipartFile file){
+    public void uploadSurvey(Model model, @RequestParam("file") MultipartFile file, HttpServletResponse response){
         simpleInMemoryStorage.save(SimpleInMemoryStorage.TYPE.SURVEY, file);
+        File zip;
         try {
-            mainProcessor.processSurvey(file.getInputStream());
+            zip = mainProcessor.processSurvey(file.getInputStream());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return "redirect:/";
+
+        //Download file
+        try {
+            // Set response content type
+            response.setContentType("text/plain");
+            // Set response headers
+            response.setHeader("Content-Disposition", "attachment; filename=" + zip.getName());
+            // Get input stream from the file resource
+            InputStream inputStream = new FileInputStream(zip);
+            // Get output stream of the response
+            OutputStream outputStream = response.getOutputStream();
+            // Copy input stream to output stream
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+
+            // Close streams
+            inputStream.close();
+            outputStream.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -27,9 +27,15 @@ public class SantaMatcher {
         StringBuilder stringBuilder = new StringBuilder();
         List<Participant> santaList = new ArrayList<>(participants);
         for (Participant participant : participants) {
-            Participant secretSanta = getNextSantaForParticipant(participant, santaList);
-            participant.setSecretSanta(secretSanta);
-            stringBuilder.append(participant.getName().concat(" : ").concat(secretSanta.getName()).concat("\n"));
+            try {
+                Participant secretSanta = getNextSantaForParticipant(participant, santaList);
+                participant.setSecretSanta(secretSanta);
+                stringBuilder.append(participant.getName().concat(" : ").concat(secretSanta.getName()).concat("\n"));
+            } catch (RuntimeException e){
+                System.out.println("THIS SHOULD NEVER HAPPEN BUT IT DOES? WTF");
+                santaList.forEach(x-> System.out.println(x.getName()));
+                throw new RuntimeException("Odd error");
+            }
         }
         String dirPath = "target".concat(File.separator).concat("output").concat(File.separator);
         String extractPath = "target".concat(File.separator).concat("extract").concat(File.separator).concat("output").concat(File.separator);
