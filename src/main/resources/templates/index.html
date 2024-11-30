@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+
+<h1>HO! HO! HO!</h1>
+<p>Please upload the Secret Santa survey</p>
+
+<!-- Form starts here -->
+<form
+        id="uploadForm"
+        method="post"
+        th:action="@{/upload}"
+        enctype="multipart/form-data">
+
+<!-- Label styled as a button -->
+<label for="input-file" class="custom-file-label btn btn-sm btn-outline-success">
+    Choose and Upload
+    <input id="input-file" type="file" name="file" style="display: none;">
+</label>
+
+</form>
+
+<!-- JavaScript -->
+<script>
+    document.getElementById('input-file').addEventListener('change', function () {
+        const form = document.getElementById('uploadForm'); // Corrected ID reference
+        if (this.files.length > 0) {
+            form.submit(); // Submit the form automatically after file selection
+        }
+    });
+</script>
+
+<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

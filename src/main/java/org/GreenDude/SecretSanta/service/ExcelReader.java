@@ -1,4 +1,4 @@
-package org.GreenDude.SecretSanta;
+package org.GreenDude.SecretSanta.service;
 
 import org.GreenDude.SecretSanta.models.Participant;
 import org.apache.poi.ss.usermodel.Cell;
@@ -6,13 +6,15 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Service;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Service
 public class ExcelReader {
 
     private final String nameFieldKey;
@@ -27,14 +29,7 @@ public class ExcelReader {
         this.isWillingFieldKey = "Do you want";
     }
 
-    public ExcelReader(String nameFieldKey, String emailFieldKey, String favoriteFieldKey, String isWillingFieldKey) {
-        this.nameFieldKey = nameFieldKey;
-        this.emailFieldKey = emailFieldKey;
-        this.favoriteFieldKey = favoriteFieldKey;
-        this.isWillingFieldKey = isWillingFieldKey;
-    }
-
-    public List<Participant> getParticipantList(String path, String sheetName) {
+    public List<Participant> getParticipantList(InputStream survey, String sheetName) {
         List<Participant> participants = new ArrayList<>();
         Workbook workbook;
         Sheet sheet;
@@ -43,8 +38,8 @@ public class ExcelReader {
         int favoritesID = -1;
         int isWillingID = -1;
 
-        try (FileInputStream file = new FileInputStream(path)) {
-            workbook = new XSSFWorkbook(file);
+        try {
+            workbook = new XSSFWorkbook(survey);
             sheet = workbook.getSheet(sheetName);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -62,11 +57,10 @@ public class ExcelReader {
                     if (cell.getStringCellValue().contains(favoriteFieldKey)) {
                         favoritesID = cell.getColumnIndex();
                     }
-                    if (Objects.nonNull(isWillingFieldKey)) {
-                        if (cell.getStringCellValue().contains(isWillingFieldKey)) {
-                            isWillingID = cell.getColumnIndex();
-                        }
+                    if (cell.getStringCellValue().contains(isWillingFieldKey)) {
+                        isWillingID = cell.getColumnIndex();
                     }
+
                     if (nameID != -1 && emailID != -1 && favoritesID != -1) {
                         System.out.println("Name ID: ".concat(String.valueOf(nameID)));
                         System.out.println("Email ID: ".concat(String.valueOf(emailID)));
