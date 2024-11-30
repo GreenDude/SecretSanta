@@ -1,6 +1,5 @@
 package org.GreenDude.SecretSanta.controller;
 
-import org.GreenDude.SecretSanta.service.FileStorageService;
 import org.GreenDude.SecretSanta.service.MainProcessor;
 import org.GreenDude.SecretSanta.service.SimpleInMemoryStorage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 
 @Controller
 public class Controllers {
-
-    @Autowired
-    private FileStorageService fileStorageService;
 
     @Autowired
     private SimpleInMemoryStorage simpleInMemoryStorage;
@@ -40,8 +35,12 @@ public class Controllers {
 
     @PostMapping("/")
     public String uploadSurvey(Model model, @RequestParam("file") MultipartFile file){
-        fileStorageService.save(file);
-        mainProcessor.processSurvey((InputStream) simpleInMemoryStorage.read(SimpleInMemoryStorage.TYPE.SURVEY), "Sheet1");
+        simpleInMemoryStorage.save(SimpleInMemoryStorage.TYPE.SURVEY, file);
+        try {
+            mainProcessor.processSurvey(file.getInputStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return "redirect:/";
     }
 }

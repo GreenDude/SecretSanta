@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -24,7 +23,7 @@ public class MainProcessor {
         customFontManager.printCustomFonts();
     }
 
-    public void processSurvey(InputStream surveyFile, String sheetName){
+    public void processSurvey(InputStream surveyFile){
         List<Participant> participants = excelReader.getParticipantList(surveyFile, "Sheet1");
         santaMatcher.cleanDuplicates(participants);
 
