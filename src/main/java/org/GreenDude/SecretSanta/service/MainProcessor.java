@@ -13,6 +13,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,7 +37,11 @@ public class MainProcessor {
         List<Participant> participants = excelReader.getParticipantList(surveyFile, "Sheet1");
         santaMatcher.cleanDuplicates(participants);
 
-        List<Participant> santaList = santaMatcher.returnSantaList(participants);
+        //This should fix the index out of bound exception
+        List<Participant> santaList = new ArrayList<>();
+        while (!santaMatcher.isMatchSuccessful()) {
+            santaList = santaMatcher.returnSantaList(participants);
+        }
 
         createOutputFolder();
         for (Participant participant : santaList) {
