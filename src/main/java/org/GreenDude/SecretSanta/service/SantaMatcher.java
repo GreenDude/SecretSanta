@@ -17,11 +17,17 @@ public class SantaMatcher {
 
     private StringBuilder stringBuilder = new StringBuilder();
 
+    private boolean matchSuccessful = false;
+
     public void cleanDuplicates(List<Participant> participants) {
         List<Participant> p = participants.stream().distinct().toList();
         participants.clear();
         participants.addAll(p);
 
+    }
+
+    public boolean isMatchSuccessful(){
+        return matchSuccessful;
     }
 
     public List<Participant> returnSantaList(List<Participant> participants) {
@@ -34,10 +40,13 @@ public class SantaMatcher {
                 stringBuilder.append(participant.getName().concat(" : ").concat(secretSanta.getName()).concat("\n"));
             } catch (RuntimeException e){
                 System.out.println("THIS SHOULD NEVER HAPPEN BUT IT DOES? WTF");
-                santaList.forEach(x-> System.out.println(x.getName()));
-                throw new RuntimeException("Odd error");
+                matchSuccessful = false;
+                return participants;
+//                santaList.forEach(x-> System.out.println(x.getName()));
+//                throw new RuntimeException("Odd error");
             }
         }
+        matchSuccessful = true;
         return participants;
     }
 
