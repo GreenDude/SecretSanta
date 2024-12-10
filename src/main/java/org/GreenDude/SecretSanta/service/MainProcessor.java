@@ -32,9 +32,9 @@ public class MainProcessor {
         zipParameters.setCompressionMethod(CompressionMethod.STORE);
     }
 
-    public File processSurvey(InputStream surveyFile){
+    public File processSurvey(InputStream surveyFile, String sheetName){
 
-        List<Participant> participants = excelReader.getParticipantList(surveyFile, "Sheet1");
+        List<Participant> participants = excelReader.getParticipantList(surveyFile, sheetName);
         santaMatcher.cleanDuplicates(participants);
 
         //This should fix the index out of bound exception

@@ -1,6 +1,7 @@
 package org.GreenDude.SecretSanta.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
+import org.GreenDude.SecretSanta.service.EmailService;
 import org.GreenDude.SecretSanta.service.MainProcessor;
 import org.GreenDude.SecretSanta.service.SimpleInMemoryStorage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,17 @@ public class Controllers {
     @Autowired
     private MainProcessor mainProcessor;
 
+    @Autowired
+    private EmailService emailService;
+
     @GetMapping("/secret_santa")
     public String mainPage(@RequestParam(name = "name", required = false, defaultValue = "there") String name, Model model){
         model.addAttribute("name", name);
+//        try {
+//            emailService.test();
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
         return "secret_santa";
     }
 
@@ -34,11 +43,15 @@ public class Controllers {
     }
 
     @PostMapping("/upload")
-    public void uploadSurvey(Model model, @RequestParam("file") MultipartFile file, HttpServletResponse response){
+    public void uploadSurvey(Model model,
+                             @RequestParam("sheetName") String sheetName,
+                             @RequestParam("file") MultipartFile file, HttpServletResponse response){
+
         simpleInMemoryStorage.save(SimpleInMemoryStorage.TYPE.SURVEY, file);
+
         File zip;
         try {
-            zip = mainProcessor.processSurvey(file.getInputStream());
+            zip = mainProcessor.processSurvey(file.getInputStream(), sheetName);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
