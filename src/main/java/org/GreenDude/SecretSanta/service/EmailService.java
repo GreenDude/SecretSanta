@@ -8,63 +8,68 @@ import jakarta.mail.internet.MimeMultipart;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 @Service
 public class EmailService {
 
 
-//    String smtpLogin = "gmosthethird@yahoo.com";
+    //    String smtpLogin = "gmosthethird@yahoo.com";
     String smtpLogin = "gheorghiimosin@gmail.com";
     String smtpHost = "smtp.gmail.com";
-//    String smtpHost = "smtp.mail.yahoo.com";
+    //    String smtpHost = "smtp.mail.yahoo.com";
     String sender = smtpLogin;
     String smtpPort = "465";
 
-    String password = "";
+    String password = "mmet nqkt sqxu mmcm";
 //    String password = "@uroraR1sing";
 
 
     private Session session;
 
-    public EmailService() {
-        createNewSession();
-    }
-
-    public void test() throws Exception {
+    public void sendMessage(String receiver, String subject, String text, List<File> attachments) {
 
         Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(sender));
-        message.setRecipients(
-                Message.RecipientType.TO, InternetAddress.parse("gmosthethird@gmail.com"));
-        message.setSubject("Mail Subject");
+        try {
+            message.setFrom(new InternetAddress(sender));
+            message.setRecipients(
+                    Message.RecipientType.TO, InternetAddress.parse(receiver));
+            message.setSubject(subject);
 
-        String msg = "This is my first email using JavaMailer";
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setContent(text, "text/html; charset=utf-8");
 
-        MimeBodyPart mimeBodyPart = new MimeBodyPart();
-        mimeBodyPart.setContent(msg, "text/html; charset=utf-8");
+            MimeBodyPart attachmentBodyPart = new MimeBodyPart();
+            for (File attachment : attachments) {
+                attachmentBodyPart.attachFile(attachment);
+            }
 
-        MimeBodyPart attachmentBodyPart = new MimeBodyPart();
-        attachmentBodyPart.attachFile(new File("/Users/mosingheorghii/SecretSanta/target/output/matches.txt"));
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mimeBodyPart);
+            multipart.addBodyPart(attachmentBodyPart);
 
-        Multipart multipart = new MimeMultipart();
-        multipart.addBodyPart(mimeBodyPart);
-        multipart.addBodyPart(attachmentBodyPart);
+            message.setContent(multipart);
 
-        message.setContent(multipart);
+            Transport.send(message);
 
-        Transport.send(message);
+        } catch (IOException | MessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void createNewSession() {
+    public void createNewSession(String login, String pass) {
+        smtpLogin = login;
+        password = pass;
+
         Properties prop = new Properties();
-        prop.put("mail.smtp.auth",true);
-        prop.put("mail.debug","true");
-//        prop.put("mail.smtp.starttls.enable","true");
-        prop.put("mail.smtp.ssl.enable","true");
-        prop.put("mail.smtp.host",smtpHost);
-        prop.put("mail.smtp.port",smtpPort);
-        prop.put("mail.smtp.ssl.trust",smtpHost);
+        prop.put("mail.smtp.auth", true);
+        prop.put("mail.debug", "true");
+        prop.put("mail.smtp.ssl.enable", "true");
+        prop.put("mail.smtp.host", smtpHost);
+        prop.put("mail.smtp.port", smtpPort);
+        prop.put("mail.smtp.ssl.trust", smtpHost);
         session = Session.getInstance(prop, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {

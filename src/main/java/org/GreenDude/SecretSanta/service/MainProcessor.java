@@ -23,6 +23,8 @@ public class MainProcessor {
     private ExcelReader excelReader;
     @Autowired
     private SantaMatcher santaMatcher;
+    @Autowired
+    private SimpleInMemoryStorage simpleInMemoryStorage;
 
     ZipParameters zipParameters = new ZipParameters();
 
@@ -32,7 +34,7 @@ public class MainProcessor {
         zipParameters.setCompressionMethod(CompressionMethod.STORE);
     }
 
-    public File processSurvey(InputStream surveyFile, String sheetName){
+    public void processSurvey(InputStream surveyFile, String sheetName){
 
         List<Participant> participants = excelReader.getParticipantList(surveyFile, sheetName);
         santaMatcher.cleanDuplicates(participants);
@@ -43,19 +45,27 @@ public class MainProcessor {
             santaList = santaMatcher.returnSantaList(participants);
         }
 
+        simpleInMemoryStorage.save(SimpleInMemoryStorage.TYPE.PARTICIPANTS, santaList);
+
         createOutputFolder();
         for (Participant participant : santaList) {
             createParticipantCard(participant);
         }
 
         santaMatcher.recordMatches();
+    }
 
+    public File getZip(){
         try (ZipFile zippy = new ZipFile(dirPath.concat("output.zip"))){
             zippy.addFolder(new File(dirPath));
             return zippy.getFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String getOutputDirectory() {
+        return dirPath;
     }
 
     private void createOutputFolder(){

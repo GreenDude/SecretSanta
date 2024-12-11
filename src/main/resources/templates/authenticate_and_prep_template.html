@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Secret Santa matching service</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+
+<form
+        id="uploadForm"
+        method="post"
+        th:action="@{/send-email}"
+        th:object="${email}">
+    <!--        th:action="@{/authenticate-and-send}"-->
+    <table>
+        <tr>
+            <td><label>login</label></td>
+            <td><input type="text" th:field="*{login}" /></td>
+        </tr>
+        <tr>
+            <td><label>password</label></td>
+            <td><input type="password" th:field="*{password}" /></td>
+        </tr>
+        <tr><td><p> </p></td></tr>
+        <tr>
+            <td><label>Subject</label></td>
+            <td><textarea rows="1" cols="50" th:field="*{subject}" >You are invited to the secret santa ceremony</textarea></td>
+        </tr>
+        <tr>
+            <td><label>Message</label></td>
+            <td><textarea rows="10" cols="50" th:field="*{text}">   Ho Ho Ho
+
+We at Secret Santa inc are happy you decided to take part in this wonderful event.
+To this email you will find attached a card for that special somebody, you are supposed to gift to.
+
+Best Regards,
+Elf #47
+Santa's top secret elf agent
+
+            </textarea></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Submit" /></td>
+        </tr>
+    </table>
+</form>
+
+
+<div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</body>
+</html>
