@@ -8,22 +8,21 @@
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
 
-<h1>Secret Santa</h1>
-<p>Congratulations! Your Secret Santa list has been created.</p>
-
 <!-- Buttons Section -->
 <div class="button-container">
-    <!-- Start Again Button -->
-    <form method="get" th:action="@{/}" style="display: inline;">
-        <button class="btn btn-primary custom-file-label" type="submit">Start Again</button>
-    </form>
-
-    <!-- Download File Button -->
+    <!-- Download Button -->
     <a th:href="@{/download}" download>
-        <button class="btn btn-secondary custom-file-label">Download File</button>
+        <button class="btn btn-primary custom-file-label">Download Now</button>
     </a>
+
+    <!-- Email Button -->
+    <form th:action="@{/send-email}" method="get" style="display: inline;">
+<!--        <input type="hidden" th:name="fileName" th:value="${fileName}"/>-->
+        <button class="btn btn-secondary custom-file-label" type="submit">Send Emails</button>
+    </form>
 </div>
 
 <div th:insert="~{fragments/footer :: footer}"></div>
+</body>
 </body>
 </html>

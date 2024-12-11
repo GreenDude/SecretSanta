@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>Secret Santa matching service</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
@@ -18,11 +18,22 @@
         th:action="@{/upload}"
         enctype="multipart/form-data">
 
-<!-- Label styled as a button -->
-<label for="input-file" class="custom-file-label btn btn-sm btn-outline-success">
-    Choose and Upload
-    <input id="input-file" type="file" name="file" style="display: none;">
-</label>
+    <label for="sheet-name">Sheet Name:</label>
+    <br>
+    <input
+            id="sheet-name"
+            type="text"
+            name="sheetName"
+            value="Sheet1"
+            required
+            placeholder="Enter the sheet name">
+    <br><br>
+
+    <!-- Label styled as a button -->
+    <label for="input-file" class="custom-file-label btn btn-sm btn-outline-success">
+        Choose and Upload
+        <input id="input-file" type="file" name="file" style="display: none;">
+    </label>
 
 </form>
 

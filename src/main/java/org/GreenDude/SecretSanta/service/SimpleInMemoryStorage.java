@@ -9,7 +9,8 @@ import java.util.Map;
 public class SimpleInMemoryStorage {
 
     public enum TYPE {
-        SURVEY ("Survey");
+        SURVEY ("Survey"),
+        PARTICIPANTS ("Participants");
 
         private final String type;
 

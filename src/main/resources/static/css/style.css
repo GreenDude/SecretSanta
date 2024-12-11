@@ -84,6 +84,25 @@ input[type="file"] {
     display: none; /* Ensure the file input remains hidden */
 }
 
+label{
+    font-family: 'MountainsofChristmas', sans-serif;
+    font-size: 1.5em;
+}
+
+input[type="text"] {
+    font-family: 'MountainsofChristmas', sans-serif;
+    font-size: 1.5em;
+}
+
 #uploadForm {
     margin-bottom: 50px; /* Adjust spacing as necessary */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Centers the buttons horizontally */
+    align-items: center;    /* Ensures buttons are aligned at the same height */
+    gap: 20px;              /* Adds spacing between the buttons */
+    margin: 20px auto;
+    padding: 10px;
 }
